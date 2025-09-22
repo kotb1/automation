@@ -17,6 +17,7 @@ public class OpenedWorkOrderDetails extends PageBase{
     }
 
 
+
     //WebElement workOrderId =driver.findElement(By.xpath("//*[contains(@id,'pt:mr:') and contains(@id,':pt:lv2:0::of9')]"));
     WebElement customersegment=driver.findElement(By.cssSelector ("span[title='Priority']"));
     String AssignementTablink="Assignments";
