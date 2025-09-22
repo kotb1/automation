@@ -15,7 +15,6 @@ public class LoginPageWorkOrderManagement extends  PageBase
 
    // @FindBy(id = "pt:username::content")
     WebElement usernametxt= driver.findElement(By.id("pt:username::content"));
-
    // @FindBy(id="pt:password::content")
     WebElement passwordtxt=driver.findElement(By.id("pt:password::content"));
    // @FindBy(id="pt:login")
