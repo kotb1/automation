@@ -27,6 +27,10 @@ public class Team_Leader_Closes_with_fail_other_reason extends TestBase {
     //Assignment Tab
     //Customer, Technical Data
     private String Work_order_id;
+
+
+
+    
     private WorkOrderHomePage workOrderHomePage;
     private String request_type;
     private Creation create;
