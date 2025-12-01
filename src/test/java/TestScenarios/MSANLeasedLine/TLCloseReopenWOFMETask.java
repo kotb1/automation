@@ -45,7 +45,7 @@ public class TLCloseReopenWOFMETask extends TestBase {
         String ReqURL= workList.get_BPM_URL();
         workList.navigate_To_BPM_Form(ReqURL);
         //fme task
-        flow.FMEsetCloseCode_Reason("1","تم حل المشكلة بعد الأصلاح من البوكس");
+        flow.FMEsetCloseCode_Reason("1","تغيير داخل");
         flow.SubmitForm();
         Thread.sleep(2000);
         workList.refresh_form(ReqURL);
@@ -61,16 +61,11 @@ public class TLCloseReopenWOFMETask extends TestBase {
         MSANWODetails.NavigateToWorkOrderDetails(OrderNo);
 
         //team cannot close order with success
-        MSANWODetails.forcecloseWOwithSuccess("تم حل المشكلة بعد أصلاح الوصلات الداخلية");
-        driver.navigate().back();
-        ClosedWO closedMSANLasedWO= new ClosedWO(driver);
-        HomePage.navigatetoWOPage();
+        MSANWODetails.forcecloseWOwithSuccess("تغيير داخل");
+        String ReOpenValidation=MSANWODetails.returnEnterpriseReOpenValidation();
+        Thread.sleep(2000);
+        Assert.assertTrue(ReOpenValidation.contains("Call Enterprise"));
 
-        closedMSANLasedWO.navigateToClosedWO();
-        closedMSANLasedWO.SeacrhWithClosedWO(OrderNo);
-        closedMSANLasedWO.navigateTOclosedWODetails();
-        String closereason= closedMSANLasedWO.returnClose_reason();
-        Assert.assertTrue(closereason.contains("تم حل المشكلة بعد أصلاح الوصلات الداخلية"));
 
 
     }

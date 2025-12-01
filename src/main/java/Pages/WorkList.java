@@ -64,13 +64,42 @@ public class WorkList
             }
         }
     }
-    public void Accept_Scheduled_order()
-    {
+    public void Accept_Scheduled_order() throws InterruptedException {
+
+        while(true) {
+            try {
+                if (driver.findElement(By.linkText("Accept Task")).isDisplayed()) {
+                    System.out.println("Accept link found.");
+                    driver.findElement(By.linkText("Accept Task")).click();
+                    driver.findElement(By.linkText("Yes")).click();
+                    driver.findElement(By.linkText("OK")).click();
+                    break;
+                }
+            } catch (NoSuchElementException e) {
+                System.out.println("Accept link not found.");
+            }
+            driver.findElement(By.linkText("Search")).click();
+            try {
+                Thread.sleep(2000); // 2 seconds
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // good practice
+            }
+        }
+
+
+
+
+
+
+
         // driver.findElement(By.id("pt:homeMenu:4:CfgGovernrateGtd")).click();
         //this.Search_zone_tasks(Work_order_id);
+        /*Thread.sleep(2000); // 2 seconds
+
         driver.findElement(By.linkText("Accept Task")).click();
+        Thread.sleep(2000); // 2 seconds
         driver.findElement(By.linkText("Yes")).click();
-        driver.findElement(By.linkText("OK")).click();
+        driver.findElement(By.linkText("OK")).click();*/
     }
     public void Accept_Assigned_order(String Work_order_id)
     {

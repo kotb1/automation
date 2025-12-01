@@ -26,6 +26,7 @@ public class HappyScenario extends TestBase {
     WorkList workList;
     LoginPageWorkOrderManagement LoginPage;
     WorkOrderHomePage HomePage;
+    DispatcherModule dispatcher;
 
 
     @Test(priority = 2)
@@ -45,19 +46,42 @@ public class HappyScenario extends TestBase {
         String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number());
        // homeP.login_navigatetoOpenedWorkOrder();
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
+        String RequestType= OpenMSANOrder.returnRequestType();
+        System.out.println(RequestType);
         MSANWODetails.NavigateToWorkOrderDetails(OrderNo);
-       // String Status= MSANWODetails.getWOStatus();
-        MSANWODetails.waitForScheduledOrder();
-        MSANWODetails.navigatetoWorkList();
-        workList.Search_zone_tasks(OrderNo);
-        workList.Accept_Scheduled_order();
-        workList.navigate_to_mytasks();
-        workList.Search_my_tasks(OrderNo);
+
+        if(RequestType.contains("Dual"))
+        {
+            dispatcher=new DispatcherModule(driver);
+            MSANWODetails.waitForAssignOrder();
+            MSANWODetails.navigatetoDispatcher();
+            dispatcher=new DispatcherModule(driver);
+            dispatcher.navigateToTaskQueue();
+            dispatcher.navigateToPendingTask();
+            dispatcher.AssignWorkOrder("MBKGZ",OrderNo,"root");
+            dispatcher.navigatebackOWorkOrder();
+            HomePage.navigate_to_worklist();
+            workList.navigate_to_mytasks();
+            workList.Search_my_tasks(OrderNo);
+            workList.Accept_Scheduled_order();
+
+        }
+        else{
+
+            // String Status= MSANWODetails.getWOStatus();
+            MSANWODetails.waitForScheduledOrder();
+            MSANWODetails.navigatetoWorkList();
+            workList.Search_zone_tasks(OrderNo);
+            workList.Accept_Scheduled_order();
+            workList.navigate_to_mytasks();
+            workList.Search_my_tasks(OrderNo);
+        }
+
         workList.StartEnterprise();
        String ReqURL= workList.get_BPM_URL();
        workList.navigate_To_BPM_Form(ReqURL);
 
-       flow.FMEsetCloseCode_Reason("1","تغير خارج");
+       flow.FMEsetCloseCode_Reason("1","تغيير مودم او راوتر");
         flow.SubmitForm();
      //   workList.refresh_form(ReqURL);
 
@@ -70,7 +94,7 @@ public class HappyScenario extends TestBase {
         closedMSANLasedWO.SeacrhWithClosedWO(OrderNo);
         closedMSANLasedWO.navigateTOclosedWODetails();
         String closereason= closedMSANLasedWO.returnClose_reason();
-        Assert.assertTrue(closereason.contains("تغير خارج"));
+        Assert.assertTrue(closereason.contains("تغيير مودم او راوتر"));
 
     }
 

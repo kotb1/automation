@@ -18,6 +18,7 @@ public class OpenedWorkOrderDetails extends PageBase {
     }
 
     String modules_icon_xpath="//*[@id=\"pt:pt_m2\"]/div/table/tbody/tr/td[1]/img";
+
     String Dispatcher_xpath="//*[@id=\"pt:i0:6:cmi0\"]/td[2]";
     //WebElement workOrderId =driver.findElement(By.xpath("//*[contains(@id,'pt:mr:') and contains(@id,':pt:lv2:0::of9')]"));
     String customerSegment_xpath = "span[title='Priority']";
@@ -34,8 +35,10 @@ public class OpenedWorkOrderDetails extends PageBase {
     String OKPopupbtn = "//*[@id=\"doc0_msgDlg_cancel\"]/a/span";
     String WO_stage_xpath="//*[contains(@id, 'WfWorkOrder5WoStage::content')]";
 //        driver.findElement(By.linkText("pt:MenuITem")).click();
-
-
+    String Enterprise_validation_xpath="//*[@id=\"doc0_msgDlg::_cnt\"]/div/table/tbody/tr/td/table/tbody/tr/td[2]/div";
+    String Cancel_closePopup_xpath="//*[@id=\"pt:mr:2:pt:updateStatusWODialog_cancel\"]/a/span";
+    String Dispatcher="//*[@id=\"pt:i0:6:cmi0\"]/td[2]";
+    String WorkOrderModule="//*[@id=\"pt:i0:1:cmi0\"]/td[2]";
     public void forcecloseWOwithSuccess(String close_reason) throws InterruptedException {
         WebElement assignmentTab = driver.findElement(By.linkText(AssignementTablink));
         assignmentTab.click();
@@ -150,7 +153,7 @@ public class OpenedWorkOrderDetails extends PageBase {
         WebElement assignmentTab = driver.findElement(By.linkText(AssignementTablink));
         assignmentTab.click();
         driver.findElement(By.xpath(EndTAskxpath)).click();
-        Thread.sleep(500);
+        Thread.sleep(2000);
         WebElement CloseCodedropDownList = driver.findElement(By.xpath(ForceCloseList));
         Select selectSuccess = new Select(CloseCodedropDownList);
         selectSuccess.selectByVisibleText("Fail");
@@ -205,7 +208,7 @@ public class OpenedWorkOrderDetails extends PageBase {
     public void navigatetoDispatcher()
     {
         driver.findElement(By.xpath(modules_icon_xpath)).click();
-        driver.findElement(By.xpath("//*[@id=\"pt:i0:6:cmi0\"]/td[2]")).click();
+        driver.findElement(By.xpath(Dispatcher)).click();
 
     }
     public void waitForAssignOrder()
@@ -246,4 +249,15 @@ public class OpenedWorkOrderDetails extends PageBase {
 
         }
     }
+    public String returnEnterpriseReOpenValidation()
+    {
+        WebElement ReOpenValidation = driver.findElement(By.xpath(Enterprise_validation_xpath));
+        return ReOpenValidation.getAttribute("textContent");
+    }
+    public void cancelClosepopup()
+    {
+        WebElement cacel= driver.findElement(By.xpath(Cancel_closePopup_xpath));
+        cacel.click();
+    }
+
 }

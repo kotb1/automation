@@ -16,7 +16,7 @@ public class WorkOrderHomePage extends PageBase
     public String work_order_TextField_id="//*[contains(@id,'pt:mr:') and contains(@id,':pt:it5::content')]";
     public String Search_text = "Search";
     public String navigation_right_menu ="pt:MenuITem";
-    public String WorkList_text_button = "//td[normalize-space(text())='Work List']";
+    public String WorkList_text_button = "pt:homeMenu:4:CfgGovernrateGtd";
 
 
     public WorkOrderHomePage(WebDriver driver) {
@@ -33,8 +33,8 @@ public class WorkOrderHomePage extends PageBase
 
     public void navigate_to_worklist()
     {
-        driver.findElement(By.id(navigation_right_menu)).click();
-        driver.findElement(By.xpath(WorkList_text_button)).click();
+       // driver.findElement(By.id(navigation_right_menu)).click();
+        driver.findElement(By.id(WorkList_text_button)).click();
     }
     public  void navigatetoWorkOrder ()
     {

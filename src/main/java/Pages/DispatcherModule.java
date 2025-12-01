@@ -19,8 +19,9 @@ public class DispatcherModule extends PageBase{
     String iframe_assign_id="dataForm::__af_Z_maskingframe";
     String search_assign="//*[contains(@id, 'qryId1:_search')]";
     String root="//*[contains(@id, 'li10')]";
-    String Assig_button="//*[contains(@id, 'bAssign12')]";
-
+    String Assig_button="//*[contains(@id,'bAssign12')]/a/span";
+    String modules_icon_xpath="//*[@id=\"pt:pt_m2\"]";
+    String work_order_xpath="//*[@id=\"pt:i0:1:cmi0\"]/td[2]";
     public void navigateToTaskQueue() throws InterruptedException {
         Thread.sleep(2000);
         driver.findElement(By.id(Task_queue_id)).click();
@@ -29,6 +30,7 @@ public class DispatcherModule extends PageBase{
         Thread.sleep(2000);
         driver.findElement(By.xpath(pending_task_xpath)).click();
     }
+
     public void AssignWorkOrder(String Org, String Work_order, String workerId)
     {
         driver.findElement(By.xpath(OrgTxt_xpath)).sendKeys(Org);
@@ -43,5 +45,10 @@ public class DispatcherModule extends PageBase{
         driver.findElement(By.xpath(root)).click();
         driver.findElement(By.xpath(Assig_button)).click();
 
+    }
+    public void navigatebackOWorkOrder()
+    {
+        driver.findElement(By.xpath(modules_icon_xpath)).click();
+        driver.findElement(By.xpath(work_order_xpath)).click();
     }
 }

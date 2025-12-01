@@ -36,8 +36,7 @@ public class OpenedWorkOrderPage extends PageBase{
     String BulkCloseReqtypeList="pt:mr:0:pt:soc156576::content";
     String BulkCloseSearchButton="pt:mr:0:pt:b77";
     String BulkcloseTaskTypeList="/html/body/div[1]/form/div[2]/div[2]/div[1]/table/tbody/tr/td/div/div/table/tbody/tr[2]/td[2]/div/div/div[1]/div/div/div/div[2]/div/span/div/table/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/select";
-
-
+    String reqtype_xpath="//label[normalize-space()='Request Type']/parent::td/following-sibling::td//span\n";
     public void SearchforWorkOrder(String Work_order_id)
     {
         //   OpenedWorkOrderLink.click();
@@ -122,6 +121,11 @@ public class OpenedWorkOrderPage extends PageBase{
 
 
 
+    }
+    public String returnRequestType()
+    {
+        WebElement ReqType = driver.findElement(By.xpath(reqtype_xpath));
+        return ReqType.getAttribute("title");
     }
 
 }

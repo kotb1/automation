@@ -136,7 +136,7 @@ public class Creation
     }
     public String send_creation_request_installation(String request_body)throws IOException
     {
-        URL url = new URL("http://10.19.35.91:8003/HiveAPIs/resources/hivews/CreateOrder");
+        URL url = new URL("http://10.19.35.76:8003/HiveAPIs/resources/hivews/CreateOrder");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);

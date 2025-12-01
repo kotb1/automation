@@ -13,10 +13,11 @@ public class MSANLasedProblem extends PageBase {
     }
 
     String problemstatus_id="CLOSE_CODE_CLODO";
-    String CloseReason_id="CLOSE_REASON_CLODO";
+    String CloseReason_id="Close_Reason2_CLODO";
     String Submit_id_xpath="//*[@id=\"SUBMIT\"]";
     String SubmitCallTeamleader_xpath="//*[@id=\"Submit\"]";
     String BusinessroleError_xpath="//*[@id=\"alertDiv\"]/p";
+    String Call_enterprise_team_xpath="//*[@id=\"lb4786\"]";
 
     public void FMEsetCloseCode_Reason(String closename, String closereason)
     {
@@ -40,6 +41,12 @@ public class MSANLasedProblem extends PageBase {
     public void  SubmitCallTeamaForm()
     {
         driver.findElement(By.xpath(SubmitCallTeamleader_xpath)).click();
+
+    }
+    public String getEnterpriseTeamValidation()
+    {
+        WebElement enterprise_team_validation = driver.findElement(By.xpath(Call_enterprise_team_xpath));
+        return enterprise_team_validation.getText().toString();
 
     }
 

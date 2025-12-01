@@ -29,7 +29,7 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
         OpenMSANOrder= new OpenedWorkOrderPage(driver);
         MSANWODetails= new OpenedWorkOrderDetails(driver);
         workList=new WorkList(driver);
-        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type("MSANLesLinePro");
+        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type("TDMLesLineProDV");
         System.out.println("order is created");
         CreateMSANLasedPrb.converting_from_string_to_XML(MSANRequestBody);
         String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number());
@@ -47,7 +47,7 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
         String ReqURL= workList.get_BPM_URL();
         workList.navigate_To_BPM_Form(ReqURL);
         //fme task
-        flow.FMEsetCloseCode_Reason("2","مشكلة سبليتر - لايوجد سبليتر آخر لدى العميل");
+        flow.FMEsetCloseCode_Reason("2","Major Fault");
         flow.SubmitForm();
         Thread.sleep(2000);
         workList.refresh_form(ReqURL);
@@ -61,7 +61,7 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
         workList.navigate_back_to_work_order();
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
         MSANWODetails.NavigateToWorkOrderDetails(OrderNo);
-        MSANWODetails.forcecloseWOwithFail("مشكلة عامه");
+        MSANWODetails.forcecloseWOwithFail("Major Fault");
         driver.navigate().refresh();
         MSANWODetails.waitForScheduledOrder();
 
@@ -76,7 +76,7 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
         workList.navigate_To_BPM_Form(ReqURL2);
 
         //CABLES TASK
-        flow.FMEsetCloseCode_Reason("2","مشكلة فواتير خدمة الصوت");
+        flow.FMEsetCloseCode_Reason("2","لم بتم حل المشكلة");
         flow.SubmitForm();
         Thread.sleep(2000);
         workList.refresh_form(ReqURL2);
@@ -95,7 +95,7 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
 
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
         MSANWODetails.NavigateToWorkOrderDetails(OrderNo);
-        MSANWODetails.forcecloseWOwithSuccess("تم الإصلاح");
+        MSANWODetails.forcecloseWOwithSuccess("تم حل المشكلة");
         driver.navigate().back();
         HomePage.navigatetoWOPage();
 
@@ -105,7 +105,7 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
         closedMSANLasedWO.SeacrhWithClosedWO(OrderNo);
         closedMSANLasedWO.navigateTOclosedWODetails();
         String closereason= closedMSANLasedWO.returnClose_reason();
-        Assert.assertTrue(closereason.contains("تم الإصلاح"));
+        Assert.assertTrue(closereason.contains("تم حل المشكلة"));
 
     }
 
