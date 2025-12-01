@@ -3,10 +3,8 @@ package TestScenarios;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,15 +13,16 @@ public  class TestBase {
     public static WebDriver driver;
 
     @BeforeSuite
-    public void setupdriver()
+    @Parameters({"SERVER_URL"})
+    public void setupdriver(String URL)
     {
         //System.setProperty("webdriver.chrome.driver","D:\\Eclipse\\Eclipse Workspace\\kotb\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         WebDriverManager.chromedriver().setup();
         driver=  new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         //workorder management module
-        driver.navigate().to("http://10.19.35.91:8003/WorkOrder/faces/UIShell");
+        driver.navigate().to(URL);
 
     }
     //@AfterSuite

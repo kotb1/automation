@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 
 import org.json.JSONObject;
+import org.openqa.selenium.NoSuchElementException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -35,12 +36,12 @@ public class Creation
     {
         this.bodies = parse_excel_sheet("C:\\Users\\hp\\OneDrive\\Desktop\\Creation.xlsx");
     }
-    public Object create_work_order(String Request_type) throws ParserConfigurationException, IOException, TransformerException, SAXException, XPathExpressionException {
+    public Object create_work_order(String Request_type, String URL) throws ParserConfigurationException, IOException, TransformerException, SAXException, XPathExpressionException {
         String body= get_creaion_by_request_type(Request_type);
         converting_from_string_to_XML(body);
         body= randomize_OM_Order_ID();
         body= update_Service_Number();
-        String work_order_id=send_creation_request_installation(body);
+        String work_order_id=send_creation_request_installation(body,URL);
         return work_order_id;
     }
     public String get_creaion_by_request_type(String Request_type)
@@ -89,6 +90,21 @@ public class Creation
         Document doc = builder.parse(new InputSource(new StringReader(xml.trim())));
         this.xml_document= doc;
     }
+    public String get_value_by_attribute(String attribute) throws XPathExpressionException {
+        try
+        {
+            Node attribute_Node = this.xml_document.getElementsByTagName(attribute).item(0);
+            String value = attribute_Node.getTextContent();
+            return value;
+        }catch(Exception e1)
+        {
+//            e1.printStackTrace();
+            XPath xPath = XPathFactory.newInstance().newXPath();
+            String expression = String.format("//addList[attCode='%s']/attValue", attribute);
+            Node valueNode = (Node) xPath.evaluate(expression, this.xml_document, XPathConstants.NODE);
+            return valueNode.getTextContent();
+        }
+    }
     public String randomize_OM_Order_ID() throws TransformerException {
         Node omOrderIDNode = this.xml_document.getElementsByTagName("OMOrderID").item(0);
         Random random = new Random();
@@ -128,9 +144,9 @@ public class Creation
         String updatedXML = writer.getBuffer().toString();
         return updatedXML;
     }
-    public String send_creation_request_installation(String request_body)throws IOException
+    public String send_creation_request_installation(String request_body,String URL)throws IOException
     {
-        URL url = new URL("http://10.19.35.91:8003/HiveAPIs/resources/hivews/CreateOrder");
+        URL url = new URL(URL);//http://10.19.35.91:8003/HiveAPIs/resources/hivews/CreateOrder
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
@@ -151,9 +167,9 @@ public class Creation
         String workOrderNo = json.getString("workOrderNo");
         return workOrderNo;
     }
-    public String send_creation_request_Maintenance(String request_body) throws Exception {
+    public String send_creation_request_Maintenance(String request_body, String URL) throws Exception {
         // SOAP endpoint URL
-        URL url = new URL("http://10.19.35.91:8003/FCCWFMInteg-FCCWFMInteg-context-root/FCCWFMIntegPort");
+        URL url = new URL(URL);// http://10.19.35.91:8003/FCCWFMInteg-FCCWFMInteg-context-root/FCCWFMIntegPort
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
