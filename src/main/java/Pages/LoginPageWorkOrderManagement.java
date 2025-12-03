@@ -13,15 +13,16 @@ public class LoginPageWorkOrderManagement extends  PageBase
         super(driver);
     }
 
-   // @FindBy(id = "pt:username::content")
-    WebElement usernametxt= driver.findElement(By.id("pt:username::content"));
-   // @FindBy(id="pt:password::content")
-    WebElement passwordtxt=driver.findElement(By.id("pt:password::content"));
-   // @FindBy(id="pt:login")
-    WebElement SubmitButton= driver.findElement(By.id("pt:login"));
+    // @FindBy(id = "pt:username::content")
+
 
     public void loginfun(String username, String Password)
     {
+        WebElement usernametxt= driver.findElement(By.id("pt:username::content"));
+        // @FindBy(id="pt:password::content")
+        WebElement passwordtxt=driver.findElement(By.id("pt:password::content"));
+        // @FindBy(id="pt:login")
+        WebElement SubmitButton= driver.findElement(By.id("pt:login"));
         settxt(usernametxt,username);
         settxt(passwordtxt,Password);
         click(SubmitButton);
