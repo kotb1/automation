@@ -1,6 +1,7 @@
 package Pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,53 +12,64 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OpenedWorkOrderDetails extends PageBase{
+public class OpenedWorkOrderDetails extends PageBase {
     public OpenedWorkOrderDetails(WebDriver driver) {
         super(driver);
     }
 
+    String modules_icon_xpath="//*[@id=\"pt:pt_m2\"]/div/table/tbody/tr/td[1]/img";
 
-
+    String Dispatcher_xpath="//*[@id=\"pt:i0:6:cmi0\"]/td[2]";
     //WebElement workOrderId =driver.findElement(By.xpath("//*[contains(@id,'pt:mr:') and contains(@id,':pt:lv2:0::of9')]"));
-    WebElement customersegment=driver.findElement(By.cssSelector ("span[title='Priority']"));
-    String AssignementTablink="Assignments";
-    String EndTAskxpath="//img[@alt='End Task']";
-    String ForceCloseList="//select[contains(@id,'soc16::content')]";
-    String Force_close_statusName="//select[contains(@id,'soc17::content')]";
-    String Force_close_Ok_button="OK";
-    String WorkOrder_Status="//*[contains(@id, 'WfWorkOrder5WoStatus')]";
-    String ReloadButton="Reload";
-
-
-
+    String customerSegment_xpath = "span[title='Priority']";
+    String AssignementTablink = "Assignments";
+    String EndTAskxpath = "//img[@alt='End Task']";
+    String ForceCloseList = "//select[contains(@id,'soc16::content')]";
+    String Force_close_statusName = "//select[contains(@id,'soc17::content')]";
+    String Force_close_Ok_button = "OK";
+    String WorkOrder_Status = "//*[contains(@id, 'WfWorkOrder5WoStatus')]";
+    String ReloadButton = "Reload";
+    String MenuItem_xpath = "//*[@id=\"pt:MenuITem\"]/div/table/tbody/tr/td[1]/img";
+    String Work_list_xpath = "//*[@id=\"pt:i0t0:4:Items1\"]/td[2]";
+    String handle_pop_xpath = "//*[@id=\"doc0_msgDlg::_cnt\"]/div/table/tbody/tr/td/table/tbody/tr/td[2]/div";
+    String OKPopupbtn = "//*[@id=\"doc0_msgDlg_cancel\"]/a/span";
+    String WO_stage_xpath="//*[contains(@id, 'WfWorkOrder5WoStage::content')]";
+    //        driver.findElement(By.linkText("pt:MenuITem")).click();
+    String Enterprise_validation_xpath="//*[@id=\"doc0_msgDlg::_cnt\"]/div/table/tbody/tr/td/table/tbody/tr/td[2]/div";
+    String Cancel_closePopup_xpath="//*[@id=\"pt:mr:2:pt:updateStatusWODialog_cancel\"]/a/span";
+    String Dispatcher="//*[@id=\"pt:i0:6:cmi0\"]/td[2]";
+    String WorkOrderModule="//*[@id=\"pt:i0:1:cmi0\"]/td[2]";
     public void forcecloseWOwithSuccess(String close_reason) throws InterruptedException {
-        WebElement assignmentTab=driver.findElement(By.linkText(AssignementTablink));
+        WebElement assignmentTab = driver.findElement(By.linkText(AssignementTablink));
         assignmentTab.click();
         driver.findElement(By.xpath(EndTAskxpath)).click();
-        Thread.sleep(500);
-        WebElement CloseCodedropDownList= driver.findElement(By.xpath(ForceCloseList));
-        Select selectSuccess= new Select(CloseCodedropDownList);
+        Thread.sleep(20000);
+        WebElement CloseCodedropDownList = driver.findElement(By.xpath(ForceCloseList));
+        Select selectSuccess = new Select(CloseCodedropDownList);
         selectSuccess.selectByVisibleText("Success");
-        Thread.sleep(300);
-        WebElement StatusNamedropdownlist=driver.findElement(By.xpath(Force_close_statusName));
-        Select StatusName= new Select(StatusNamedropdownlist);
+        Thread.sleep(20000);
+        WebElement StatusNamedropdownlist = driver.findElement(By.xpath(Force_close_statusName));
+        Select StatusName = new Select(StatusNamedropdownlist);
         StatusName.selectByVisibleText(close_reason);
-        WebElement OkButton=driver.findElement(By.linkText(Force_close_Ok_button));
+        WebElement OkButton = driver.findElement(By.linkText(Force_close_Ok_button));
         OkButton.click();
     }
-    public String returncustomersegment()
-    {
+
+    public String returncustomersegment() {
+        WebElement customersegment = driver.findElement(By.cssSelector(customerSegment_xpath));
+
         return customersegment.getText().toString();
     }
-    public void NavigateToWorkOrderDetails(String work_order_id)
-    {
+
+    public void NavigateToWorkOrderDetails(String work_order_id) {
         WebElement workOrderId = driver.findElement(By.xpath("//span[normalize-space(text())='" + work_order_id + "']"));
         workOrderId.click();
 
     }
+
     public void forcecloseWOwithFail2(String close_reason) throws InterruptedException {
 
-        WebElement assignmentTab=driver.findElement(By.linkText(AssignementTablink));
+        WebElement assignmentTab = driver.findElement(By.linkText(AssignementTablink));
         assignmentTab.click();
         driver.findElement(By.xpath(EndTAskxpath)).click();
         WebElement firstDropdown = driver.findElement(By.xpath("//select[contains(@id,'soc16::content')]"));
@@ -86,6 +98,7 @@ public class OpenedWorkOrderDetails extends PageBase{
         }
 
     }
+
     public void printAllIframes(WebDriver driver) {
         List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
         System.out.println("Total iframes found: " + iframes.size());
@@ -135,29 +148,116 @@ public class OpenedWorkOrderDetails extends PageBase{
             driver.switchTo().defaultContent();
         }
     }
+
     public void forcecloseWOwithFail(String close_reason) throws InterruptedException {
-        WebElement assignmentTab=driver.findElement(By.linkText(AssignementTablink));
+        WebElement assignmentTab = driver.findElement(By.linkText(AssignementTablink));
         assignmentTab.click();
         driver.findElement(By.xpath(EndTAskxpath)).click();
-        Thread.sleep(500);
-        WebElement CloseCodedropDownList= driver.findElement(By.xpath(ForceCloseList));
-        Select selectSuccess= new Select(CloseCodedropDownList);
+        Thread.sleep(2000);
+        WebElement CloseCodedropDownList = driver.findElement(By.xpath(ForceCloseList));
+        Select selectSuccess = new Select(CloseCodedropDownList);
         selectSuccess.selectByVisibleText("Fail");
         Thread.sleep(300);
-        WebElement StatusNamedropdownlist=driver.findElement(By.xpath(Force_close_statusName));
-        Select StatusName= new Select(StatusNamedropdownlist);
+        WebElement StatusNamedropdownlist = driver.findElement(By.xpath(Force_close_statusName));
+        Select StatusName = new Select(StatusNamedropdownlist);
         StatusName.selectByVisibleText(close_reason);
-        WebElement OkButton=driver.findElement(By.linkText(Force_close_Ok_button));
+        WebElement OkButton = driver.findElement(By.linkText(Force_close_Ok_button));
         OkButton.click();
     }
-    public String getWOStatus()
-    {
-        WebElement WOStatus = driver.findElement(By.xpath(WorkOrder_Status));
-        return WOStatus.getText().toString();
+
+    public String getWOStatus() {
+        String WOstatus = null;
+        try {
+
+            WOstatus = driver.findElement(By.xpath(WorkOrder_Status)).getText().toString();
+        } catch (StaleElementReferenceException e) {
+            WebElement wostatustxt = driver.findElement(By.xpath(WorkOrder_Status));
+            WOstatus = wostatustxt.getText().toString();
+        }
+        return WOstatus;
     }
-    public void reload()
-    {
-        WebElement reloadButton=driver.findElement(By.linkText(ReloadButton));
-        reloadButton.click();
+    public String getWOStage() {
+        String WOstage = null;
+        try {
+
+            WOstage = driver.findElement(By.xpath(WO_stage_xpath)).getText().toString();
+        } catch (StaleElementReferenceException e) {
+            WebElement wostatustxt = driver.findElement(By.xpath(WorkOrder_Status));
+            WOstage = wostatustxt.getText().toString();
+        }
+        return WOstage;
     }
+    public void reload() {
+        try {
+            driver.findElement(By.linkText("Reload")).click();
+        } catch (StaleElementReferenceException e) {
+            WebElement reloadBtn = driver.findElement(By.linkText("Reload"));
+            reloadBtn.click();
+        }
+    }
+
+    public void navigatetoWorkList() {
+        driver.findElement(By.xpath(MenuItem_xpath)).click();
+        driver.findElement(By.xpath(Work_list_xpath)).click();
+    }
+
+    public void handlepop() {
+        driver.findElement(By.xpath(handle_pop_xpath)).getText().toString();
+    }
+
+    public void navigatetoDispatcher()
+    {
+        driver.findElement(By.xpath(modules_icon_xpath)).click();
+        driver.findElement(By.xpath(Dispatcher)).click();
+
+    }
+    public void waitForAssignOrder()
+    {
+        while (true)
+        {
+
+            String stage= getWOStage();
+            // System.out.println(Status);
+            if (stage.trim().contains("Assign") ) {
+                System.out.println(stage + "If condition done");
+                break;
+            }
+            else
+            {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
+                reload();
+            }
+
+        }
+    }
+    public void waitForScheduledOrder()
+    {
+        while (true)
+        {
+
+            String status= getWOStatus();
+            // System.out.println(Status);
+            if (status.trim().contains("Scheduled") ) {
+                System.out.println(status + "If condition done");
+                break;
+            }
+            else
+            {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
+                reload();
+            }
+
+        }
+    }
+    public String returnEnterpriseReOpenValidation()
+    {
+        WebElement ReOpenValidation = driver.findElement(By.xpath(Enterprise_validation_xpath));
+        return ReOpenValidation.getAttribute("textContent");
+    }
+    public void cancelClosepopup()
+    {
+        WebElement cacel= driver.findElement(By.xpath(Cancel_closePopup_xpath));
+        cacel.click();
+    }
+
 }
