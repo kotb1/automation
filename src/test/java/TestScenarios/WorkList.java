@@ -25,8 +25,8 @@ import java.util.concurrent.TimeUnit;
 public class WorkList extends TestBase
 {
     Pages.WorkList x;
-    FTTHWrongCardPort y;
-    WorkList()
+   FTTHWrongCardPort y;
+       WorkList()
     {
         x = new Pages.WorkList(driver);
         y = new FTTHWrongCardPort(driver);
@@ -57,8 +57,7 @@ public class WorkList extends TestBase
     }*/
 
     @Test
-    public void fail_from_assignment_tab_FTTHCHONTLOC() throws Exception
-    {
+    public void fail_from_assignment_tab_FTTHCHONTLOC() throws Exception {
         Creation create = new Creation();
         x = new Pages.WorkList(driver);
         create.converting_from_string_to_XML(create.get_creaion_by_request_type("FTTHChgONTLoc"));
