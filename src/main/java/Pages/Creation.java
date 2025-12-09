@@ -16,7 +16,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 
 import org.json.JSONObject;
-import org.openqa.selenium.NoSuchElementException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -33,15 +32,17 @@ public class Creation
     protected Document xml_document;
 
     public Creation()
+
     {
-        this.bodies = parse_excel_sheet("C:\\Users\\hp\\OneDrive\\Desktop\\Creation.xlsx");
+        this.bodies = parse_excel_sheet("D:\\Alaa\\AutomationTestData\\Book1.xlsx");
     }
-    public Object create_work_order(String Request_type, String URL) throws ParserConfigurationException, IOException, TransformerException, SAXException, XPathExpressionException {
+    public Object create_work_order(String Request_type) throws ParserConfigurationException, IOException, TransformerException, SAXException, XPathExpressionException
+    {
         String body= get_creaion_by_request_type(Request_type);
         converting_from_string_to_XML(body);
         body= randomize_OM_Order_ID();
         body= update_Service_Number();
-        String work_order_id=send_creation_request_installation(body,URL);
+        String work_order_id=send_creation_request_installation(body);
         return work_order_id;
     }
     public String get_creaion_by_request_type(String Request_type)
@@ -60,7 +61,8 @@ public class Creation
     {
         this.bodies = new ArrayList<Creation_body>();
         try (FileInputStream fis = new FileInputStream(new File(excelFilePath));
-             Workbook workbook = new XSSFWorkbook(fis)) {
+             Workbook workbook = new XSSFWorkbook(fis))
+        {
 
             Sheet sheet = workbook.getSheetAt(0); // First sheet
             int rowCount = sheet.getPhysicalNumberOfRows();
@@ -69,7 +71,8 @@ public class Creation
             String label2 = headerRow.getCell(1).getStringCellValue();
             for (int i = 1; i < rowCount; i++) {
                 Row row = sheet.getRow(i);
-                if (row != null) {
+                if (row != null)
+                {
                     String value1 = row.getCell(0).toString();
                     String value2 = row.getCell(1).toString();
                     Creation_body body = new Creation_body(value1,value2);
@@ -77,7 +80,8 @@ public class Creation
                 }
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return this.bodies;
@@ -89,21 +93,6 @@ public class Creation
         String xml = xml2.toString().replace("\uFEFF", "").trim();
         Document doc = builder.parse(new InputSource(new StringReader(xml.trim())));
         this.xml_document= doc;
-    }
-    public String get_value_by_attribute(String attribute) throws XPathExpressionException {
-        try
-        {
-            Node attribute_Node = this.xml_document.getElementsByTagName(attribute).item(0);
-            String value = attribute_Node.getTextContent();
-            return value;
-        }catch(Exception e1)
-        {
-//            e1.printStackTrace();
-            XPath xPath = XPathFactory.newInstance().newXPath();
-            String expression = String.format("//addList[attCode='%s']/attValue", attribute);
-            Node valueNode = (Node) xPath.evaluate(expression, this.xml_document, XPathConstants.NODE);
-            return valueNode.getTextContent();
-        }
     }
     public String randomize_OM_Order_ID() throws TransformerException {
         Node omOrderIDNode = this.xml_document.getElementsByTagName("OMOrderID").item(0);
@@ -119,7 +108,8 @@ public class Creation
         String updatedXML = writer.getBuffer().toString();
         return updatedXML;
     }
-    public String update_Service_Number() throws TransformerException {
+    public String update_Service_Number() throws TransformerException
+    {
         Node omOrderIDNode = this.xml_document.getElementsByTagName("ServiceNo").item(0);
         omOrderIDNode.setTextContent("37278097");
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -144,9 +134,9 @@ public class Creation
         String updatedXML = writer.getBuffer().toString();
         return updatedXML;
     }
-    public String send_creation_request_installation(String request_body,String URL)throws IOException
+    public String send_creation_request_installation(String request_body)throws IOException
     {
-        URL url = new URL(URL);//http://10.19.35.91:8003/HiveAPIs/resources/hivews/CreateOrder
+        URL url = new URL("http://10.19.35.76:8003/HiveAPIs/resources/hivews/CreateOrder");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
@@ -167,9 +157,9 @@ public class Creation
         String workOrderNo = json.getString("workOrderNo");
         return workOrderNo;
     }
-    public String send_creation_request_Maintenance(String request_body, String URL) throws Exception {
+    public String send_creation_request_Maintenance(String request_body) throws Exception {
         // SOAP endpoint URL
-        URL url = new URL(URL);// http://10.19.35.91:8003/FCCWFMInteg-FCCWFMInteg-context-root/FCCWFMIntegPort
+        URL url = new URL("http://10.19.35.91:8003/FCCHiveWS/WSPort");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
@@ -198,7 +188,8 @@ public class Creation
 
         return workOrderNo;
     }
-    public String parseSoapResponse(String responseXml) throws Exception {
+    public String parseSoapResponse(String responseXml) throws Exception
+    {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true); // مهم عشان فيه namespaces
         DocumentBuilder builder = factory.newDocumentBuilder();
