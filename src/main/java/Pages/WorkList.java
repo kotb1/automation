@@ -16,6 +16,11 @@ public class WorkList
     {
         this.driver=driver;
     }
+    String closeformXpath="//*[contains(@id, 'close')]";
+    String iframMyTask_task="//*[@id=\"dataForm::__af_Z_maskingframe\"]/iframe";
+    //*[@id="dataForm::__af_Z_maskingframe"]/iframe
+    String closecode_xpath="//*[contains(@id, 'soc8::content')]";
+    String close_reason_xpath="//*[contains(@id,'of16')]";
     public void navigate_back_to_work_order()
     {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -256,5 +261,45 @@ public class WorkList
             String value = input.getText();
             return value;
         }
+    }
+    public void StartEnterprise()
+    {
+        while(true) {
+            try {
+                if (driver.findElement(By.linkText("start")).isDisplayed()) {
+                    System.out.println("Start link found.");
+                    driver.findElement(By.linkText("start")).click();
+                    break;
+                }
+            } catch (NoSuchElementException e) {
+                System.out.println("Start link not found.");
+            }
+            driver.findElement(By.linkText("Search")).click();
+            try {
+                Thread.sleep(2000); // 2 seconds
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // good practice
+            }
+        }
+    }
+    public void CloseForm()
+    {
+        WebElement iframe = driver.findElement(By.xpath(iframMyTask_task));
+        //Switch to the frame
+        driver.switchTo().frame(iframe);
+        driver.findElement(By.linkText("Close")).click();
+    }
+    public String returncloaseCode() throws InterruptedException {
+        Thread.sleep(2000);
+
+        WebElement closecode = driver.findElement(By.xpath(closecode_xpath));
+        return  closecode.getText().toString();
+
+    }
+    public String returncloaseReason() throws InterruptedException {
+        Thread.sleep(2000);
+        WebElement closeReason = driver.findElement(By.xpath(close_reason_xpath));
+        return  closeReason.getAttribute("title");
+
     }
 }

@@ -30,6 +30,11 @@ public class WorkOrderHomePage extends PageBase
         navigatetoWorkOrder(username,password);
 
     }
+    public void navigatetoWOPage()
+    {
+        driver.findElement(By.id(work_order_button_id)).click();
+
+    }
     // @FindBy(id="pt:homeMenu:1:pt_li1")
     //  WebElement WorkOrderPage=driver.findElement(By.id("pt:homeMenu:1:CfgGovernrateGtd"));
     //public WebElement logeduser= driver.findElement(new By.ByLinkText("root"));
