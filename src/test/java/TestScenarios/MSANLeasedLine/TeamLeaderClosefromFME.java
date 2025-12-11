@@ -5,6 +5,7 @@ import Pages.*;
 import TestScenarios.HomePage;
 import TestScenarios.TestBase;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class TeamLeaderClosefromFME extends TestBase {
@@ -19,21 +20,22 @@ public class TeamLeaderClosefromFME extends TestBase {
     WorkOrderHomePage HomePage;
     DispatcherModule dispatcher;
 
+    @Parameters({"url","username","password","request_type"})
 
     @Test(priority = 2)
-    public void TeamLeadercloseSucccessfromFME() throws Exception {
+    public void TeamLeadercloseSucccessfromFME(String url,String username, String Password,String RequestType1) throws Exception {
 
         LoginPage=new LoginPageWorkOrderManagement(driver);
-        HomePage=new WorkOrderHomePage(driver);
+        HomePage=new WorkOrderHomePage(driver,username,Password);
         MSANLasedProblem flow=new MSANLasedProblem(driver);
         MSANWorkFlow=new MSANLasedProblem(driver);
         OpenMSANOrder= new OpenedWorkOrderPage(driver);
         MSANWODetails= new OpenedWorkOrderDetails(driver);
         workList=new WorkList(driver);
-        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type("TDMLesLineProDV");
+        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type(RequestType1);
         System.out.println("order is created");
         CreateMSANLasedPrb.converting_from_string_to_XML(MSANRequestBody);
-        String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number());
+        String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number(),url);
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
         String RequestType= OpenMSANOrder.returnRequestType();
 
@@ -83,7 +85,7 @@ public class TeamLeaderClosefromFME extends TestBase {
         workList.navigate_back_to_work_order();
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
         MSANWODetails.NavigateToWorkOrderDetails(OrderNo);
-        MSANWODetails.forcecloseWOwithSuccess("كابل سئ");
+        MSANWODetails.forcecloseWOwithSuccess("تغيير مودم او راوتر");
         driver.navigate().back();
         ClosedWO closedMSANLasedWO= new ClosedWO(driver);
         HomePage.navigatetoWOPage();
@@ -92,7 +94,7 @@ public class TeamLeaderClosefromFME extends TestBase {
         closedMSANLasedWO.SeacrhWithClosedWO(OrderNo);
         closedMSANLasedWO.navigateTOclosedWODetails();
         String closereason= closedMSANLasedWO.returnClose_reason();
-        Assert.assertTrue(closereason.contains("كابل سئ"));
+        Assert.assertTrue(closereason.contains("تغيير مودم او راوتر"));
 
     }
 

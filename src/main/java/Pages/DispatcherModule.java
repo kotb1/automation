@@ -31,8 +31,7 @@ public class DispatcherModule extends PageBase{
         driver.findElement(By.xpath(pending_task_xpath)).click();
     }
 
-    public void AssignWorkOrder(String Org, String Work_order, String workerId)
-    {
+    public void AssignWorkOrder(String Org, String Work_order, String workerId) throws InterruptedException {
         driver.findElement(By.xpath(OrgTxt_xpath)).sendKeys(Org);
         driver.findElement(By.xpath(WOTxt_xpath)).sendKeys(Work_order);
         driver.findElement(By.linkText(Search_linktxt)).click();
@@ -43,6 +42,7 @@ public class DispatcherModule extends PageBase{
         driver.findElement(By.xpath(worker_id_txt)).sendKeys(workerId);
         driver.findElement(By.xpath(search_assign)).click();
         driver.findElement(By.xpath(root)).click();
+        Thread.sleep(2000);
         driver.findElement(By.xpath(Assig_button)).click();
 
     }

@@ -111,7 +111,11 @@ public class WorkList
         while(!isYesFound)
         {
             try{
-                driver.findElement(By.linkText("Accept Task")).click();
+                WebElement acceptTask = wait.until(
+                        ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(text(),'Accept Task')]"))
+                );
+
+                acceptTask.click();
                 WebElement yesButton = wait.until(
                         ExpectedConditions.elementToBeClickable(By.linkText("Yes"))
                 );
@@ -121,6 +125,8 @@ public class WorkList
                 break;
             }catch (TimeoutException e) {
                 System.out.println("'Yes' button not found yet, retrying...");
+                driver.findElement(By.linkText("Search")).click();
+
             }
         }
 

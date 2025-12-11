@@ -7,6 +7,7 @@ import TestScenarios.OpenedWorkOrder;
 import TestScenarios.TestBase;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 
@@ -28,22 +29,23 @@ public class HappyScenario extends TestBase {
     WorkOrderHomePage HomePage;
     DispatcherModule dispatcher;
 
+    @Parameters({"url","username","password","request_type"})
 
     @Test(priority = 2)
-    public void HappyScenario() throws Exception {
+    public void HappyScenario(String url,String username, String Password,String RequestType1) throws Exception {
 
         LoginPage=new LoginPageWorkOrderManagement(driver);
-        HomePage=new WorkOrderHomePage(driver);
+        HomePage=new WorkOrderHomePage(driver,username,Password);
         MSANLasedProblem flow=new MSANLasedProblem(driver);
         // LoginPage.loginfun("root","root1234");
         MSANWorkFlow=new MSANLasedProblem(driver);
         OpenMSANOrder= new OpenedWorkOrderPage(driver);
         MSANWODetails= new OpenedWorkOrderDetails(driver);
         workList=new WorkList(driver);
-        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type("MSANLesLinePro");
+        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type(RequestType1);
         System.out.println("order is created");
         CreateMSANLasedPrb.converting_from_string_to_XML(MSANRequestBody);
-        String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number());
+        String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number(),url);
         // homeP.login_navigatetoOpenedWorkOrder();
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
         String RequestType= OpenMSANOrder.returnRequestType();

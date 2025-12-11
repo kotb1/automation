@@ -28,7 +28,7 @@ public class OpenedWorkOrderDetails extends PageBase{
     //        driver.findElement(By.linkText("pt:MenuITem")).click();
     String Enterprise_validation_xpath="//*[@id=\"doc0_msgDlg::_cnt\"]/div/table/tbody/tr/td/table/tbody/tr/td[2]/div";
     String Cancel_closePopup_xpath="//*[@id=\"pt:mr:2:pt:updateStatusWODialog_cancel\"]/a/span";
-    String Dispatcher="//*[@id=\"pt:i0:6:cmi0\"]/td[2]";
+    String Dispatcher="//td[contains(text(),'Assignment and Dispatch')]";
     String WorkOrderModule="//*[@id=\"pt:i0:1:cmi0\"]/td[2]";
 
 
@@ -36,7 +36,7 @@ public class OpenedWorkOrderDetails extends PageBase{
 
 
     //WebElement workOrderId =driver.findElement(By.xpath("//*[contains(@id,'pt:mr:') and contains(@id,':pt:lv2:0::of9')]"));
-    WebElement customersegment=driver.findElement(By.cssSelector ("span[title='Priority']"));
+    String CustomerSegment="span[title='Priority']";
     String AssignementTablink="Assignments";
     String EndTAskxpath="//img[@alt='End Task']";
     String ForceCloseList="//select[contains(@id,'soc16::content')]";
@@ -51,11 +51,11 @@ public class OpenedWorkOrderDetails extends PageBase{
         WebElement assignmentTab=driver.findElement(By.linkText(AssignementTablink));
         assignmentTab.click();
         driver.findElement(By.xpath(EndTAskxpath)).click();
-        Thread.sleep(500);
+        Thread.sleep(2000);
         WebElement CloseCodedropDownList= driver.findElement(By.xpath(ForceCloseList));
         Select selectSuccess= new Select(CloseCodedropDownList);
         selectSuccess.selectByVisibleText("Success");
-        Thread.sleep(300);
+        Thread.sleep(5000);
         WebElement StatusNamedropdownlist=driver.findElement(By.xpath(Force_close_statusName));
         Select StatusName= new Select(StatusNamedropdownlist);
         StatusName.selectByVisibleText(close_reason);
@@ -64,6 +64,8 @@ public class OpenedWorkOrderDetails extends PageBase{
     }
     public String returncustomersegment()
     {
+        WebElement customersegment=driver.findElement(By.cssSelector (CustomerSegment));
+
         return customersegment.getText().toString();
     }
     public void NavigateToWorkOrderDetails(String work_order_id)

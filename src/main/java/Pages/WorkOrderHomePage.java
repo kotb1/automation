@@ -19,7 +19,7 @@ public class WorkOrderHomePage extends PageBase
     public String work_order_TextField_id="//*[contains(@id,'pt:mr:') and contains(@id,':pt:it5::content')]";
     public String Search_text = "Search";
     public String navigation_right_menu ="pt:MenuITem";
-    public String WorkList_text_button = "//td[normalize-space(text())='Work List']";
+    public String WorkList_text_button = "//*[@id=\"pt:homeMenu:4:CfgGovernrateGtd\"]";
     public String closed_work_order_tab_xpath="//a[text()='Closed Work Orders']";
     public String opened_work_order_tab_xpath="//a[text()='Opened Work Orders']";
     public String opened_work_order_home_page_xpath="//span[normalize-space(text())='Work Order >']";

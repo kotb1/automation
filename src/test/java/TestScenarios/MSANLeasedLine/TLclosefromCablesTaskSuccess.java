@@ -5,6 +5,7 @@ import Pages.*;
 import TestScenarios.HomePage;
 import TestScenarios.TestBase;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class TLclosefromCablesTaskSuccess extends TestBase {
@@ -18,21 +19,22 @@ public class TLclosefromCablesTaskSuccess extends TestBase {
     LoginPageWorkOrderManagement LoginPage;
     WorkOrderHomePage HomePage;
 
+    @Parameters({"url","username","password","request_type"})
 
     @Test(priority = 2)
-    public void TeamLeaderCloseSuccessCables() throws Exception {
+    public void TeamLeaderCloseSuccessCables(String url,String username, String Password,String RequestType1) throws Exception {
 
         LoginPage=new LoginPageWorkOrderManagement(driver);
-        HomePage=new WorkOrderHomePage(driver);
+        HomePage=new WorkOrderHomePage(driver,username,Password);
         MSANLasedProblem flow=new MSANLasedProblem(driver);
         MSANWorkFlow=new MSANLasedProblem(driver);
         OpenMSANOrder= new OpenedWorkOrderPage(driver);
         MSANWODetails= new OpenedWorkOrderDetails(driver);
         workList=new WorkList(driver);
-        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type("TDMLesLineProDV");
+        String MSANRequestBody= CreateMSANLasedPrb.get_creaion_by_request_type(RequestType1);
         System.out.println("order is created");
         CreateMSANLasedPrb.converting_from_string_to_XML(MSANRequestBody);
-        String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number());
+        String OrderNo=CreateMSANLasedPrb.send_creation_request_Maintenance( CreateMSANLasedPrb.update_complain_number(),url);
         homeP.login_navigatetoOpenedWorkOrder();
         OpenMSANOrder.SearchforWorkOrder(OrderNo);
         MSANWODetails.NavigateToWorkOrderDetails(OrderNo);
